@@ -14,9 +14,10 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
+import plotly.graph_objects as go
 
 st.set_page_config(
-    page_title="GA4 Country Dashboard",
+    page_title="Geographic Details Dashboard for Maxfield Marketing",
     layout="wide",
     page_icon=":bar_chart:"
 )
