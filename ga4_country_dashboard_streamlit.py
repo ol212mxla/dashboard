@@ -1,8 +1,8 @@
 
-# GA4 Country Performance Dashboard (Streamlit)
+# GA4 Country Performance Dashboard (Streamlit) - Patched
 # ---------------------------------------------------
 # How to run locally:
-#   1) pip install streamlit plotly pandas numpy
+#   1) pip install -r requirements.txt
 #   2) streamlit run ga4_country_dashboard_streamlit.py
 #
 # The app expects a CSV with the columns found in your uploaded file:
@@ -234,15 +234,34 @@ with r2:
     )
     st.plotly_chart(fig_monet, use_container_width=True)
 
-# Revenue share treemap
+# Revenue share treemap (robust implementation)
 st.markdown("**Revenue Share by Country**")
-fig_tree = px.treemap(
-    df,
-    path=["Country"],
-    values="Total revenue (num)",
-    title="Revenue Share"
-)
-st.plotly_chart(fig_tree, use_container_width=True)
+try:
+    import plotly.graph_objects as go
+    treemap_df = df[["Country", "Total revenue (num)"]].copy()
+    treemap_df["Total revenue (num)"] = treemap_df["Total revenue (num)"].fillna(0)
+
+    fig_tree = go.Figure(
+        go.Treemap(
+            labels=treemap_df["Country"],
+            parents=[""] * len(treemap_df),
+            values=treemap_df["Total revenue (num)"],
+            branchvalues="total"
+        )
+    )
+    fig_tree.update_layout(title="Revenue Share")
+    st.plotly_chart(fig_tree, use_container_width=True)
+
+except Exception as e:
+    st.warning(f"Treemap failed to render (falling back to bar chart). Error: {e}")
+    fig_rev_fallback = px.bar(
+        df.sort_values("Total revenue (num)", ascending=False),
+        x="Country", y="Total revenue (num)",
+        title="Revenue Share (Fallback)",
+        text="Total revenue (num)"
+    )
+    fig_rev_fallback.update_traces(texttemplate="$%{text:,.0f}", textposition="outside")
+    st.plotly_chart(fig_rev_fallback, use_container_width=True)
 
 st.divider()
 
@@ -265,4 +284,3 @@ st.plotly_chart(fig_map, use_container_width=True)
 
 st.write("")
 st.info("Tip: Use the sidebar to filter countries and adjust the Top N.")
-
