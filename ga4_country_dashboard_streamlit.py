@@ -83,7 +83,7 @@ st.caption("Interactive insights for audience, engagement, funnel, revenue, and 
 
 # File input
 st.sidebar.header("Upload Data")
-uploaded = st.sidebar.file_uploader("Upload GA4 country CSV", type=["csv"])
+uploaded = st.sidebar.file_uploader("Upload CSV file", type=["csv"])
 st.sidebar.markdown("Or use the sample file if you already have the provided CSV.")
 
 # Filters
