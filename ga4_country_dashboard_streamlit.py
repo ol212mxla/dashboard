@@ -17,7 +17,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 st.set_page_config(
-    page_title="Geographic Details Dashboard for Maxfield Marketing",
+    page_title="Geographic Metrics Dashboard",
     layout="wide",
     page_icon=":bar_chart:"
 )
