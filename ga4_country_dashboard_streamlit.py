@@ -78,7 +78,7 @@ def load_data(uploaded_file):
 
     return df
 
-st.title("GA4 Country Performance Dashboard")
+st.title("Geographic Metrics Dashboard")
 st.caption("Interactive insights for audience, engagement, funnel, revenue, and geography.")
 
 # File input
